@@ -1,0 +1,20 @@
+---
+- hosts: host
+  remote_user: vagrant
+
+  tasks:
+   
+   - name: Register the server
+     command: subscription-manager register --username "{{ rh_username }}" --password "{{ rh_password }}" --force
+
+   - name: Attach to pool
+     command: subscription-manager attach --pool= "{{ pool_id }}"
+  
+   - name: Disable other repos
+     command: subscription-manager repos --disable=*
+
+   - name: Enable the repos
+     command: subscription-manager repos --enable=rhel-7-server-rpms --enable=rh-gluster-3-for-rhel-7-server-rpms --enable=rhel-7-server-rhev-mgmt-agent-rpms
+
+   - name: Update all packages
+     command: yum update -y
