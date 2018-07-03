@@ -1,0 +1,14 @@
+---
+- hosts: host 
+  remote_user: vagrant
+
+  tasks:
+  - name: Create list of users & groups 
+    user:
+      name: "{{ item.name }}"
+      state: present
+      groups: "{{ item.groups }}"
+  
+    with_items:
+      - { name: 'redhat', groups: 'wheel' }
+      - { name: 'fedora', groups: 'root' }
