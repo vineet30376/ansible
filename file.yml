@@ -1,0 +1,7 @@
+---
+ - hosts: rhel6.7
+   
+   tasks:
+   
+    - name: create a file
+      file: path=/tmp/ansibletest owner=root group=root mode=0666
