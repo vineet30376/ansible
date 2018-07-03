@@ -1,0 +1,9 @@
+---
+ - hosts: rhel6.7
+
+   tasks:
+
+    - include: install_apache.yml
+
+    - name: Check Apache service
+      service: name={{ package_name }} state=started
