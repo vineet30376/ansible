@@ -1,0 +1,10 @@
+---
+- hosts: web
+  
+  tasks:
+   - name: Install multiple packages with state
+     yum: name={{ item.name }} state={{ item.state }}
+     with_items:
+      - {name: 'httpd', state: 'absent'}
+      - {name: 'mysql', state: 'latest'}
+      - {name: 'mysql-server', state: 'latest'}
