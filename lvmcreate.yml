@@ -1,0 +1,31 @@
+---
+ - hosts: rhev6.7
+
+   tasks:
+
+     - name: Create Volume group
+       lvg:
+         
+             vg: vg01_rhs
+             pvs: /dev/vdb
+
+     - name: Create logical volume
+       lvol:
+         
+             vg: vg01_rhs
+             lv: test
+             size: 500M
+
+     - name: Create filesystem
+       filesystem:
+             
+             fstype: xfs
+             dev: /dev/vg01_rhs/test
+
+     - name: Mount the filesystem
+       mount:
+
+             name: /lvtest
+             src: /dev/vg01_rhs/test
+             fstype: xfs
+             state: mounted
