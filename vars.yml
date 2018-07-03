@@ -1,0 +1,11 @@
+---
+- hosts: rhel6.7
+
+  vars:
+   - package_name: git
+
+  tasks:
+   - name: Install Git package
+     yum: name={{ package_name }} state=present
+
+   - debug: msg="Git installed on {{ inventory_hostname }}"
