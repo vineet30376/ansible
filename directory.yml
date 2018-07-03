@@ -1,0 +1,7 @@
+---
+ - hosts: rhel6.7
+
+   tasks:
+
+    - name: Create directory
+      file: path=/tmp/hello owner=root group=root mode=0644 state=directory
