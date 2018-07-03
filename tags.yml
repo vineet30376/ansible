@@ -1,0 +1,18 @@
+---
+- hosts: rhel6.7
+  
+  tasks:
+   - name: Install Apache package
+     yum: name=httpd state=installed
+     tags:
+      - install
+
+   - name: Start Apache service
+     service: name=httpd state=started
+     tags:
+      - start
+
+   - name: Stop Apache service
+     yum: name=httpd state=absent
+     tags:
+      - stop
