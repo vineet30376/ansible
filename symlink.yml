@@ -1,0 +1,7 @@
+---
+- hosts: rhel6.7
+
+  tasks:
+
+   - name: Create a symlink
+     file: src=/etc/ansibletest dest=/tmp/ansible owner=root group=root state=link
