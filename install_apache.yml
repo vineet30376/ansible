@@ -1,0 +1,6 @@
+---
+ - set_fact: package_name=httpd
+   when: ansible_os_family == "RedHat" 
+
+ - name: Install httpd
+   yum: name=httpd state=latest
