@@ -1,0 +1,9 @@
+---
+- hosts: rhel6.7 
+  tasks:
+
+    - name: Install httpd
+      yum: name=httpd state=latest
+
+    - name: Run httpd service
+      service: name=httpd state=stopped
