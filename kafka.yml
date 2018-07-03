@@ -1,0 +1,59 @@
+---
+- hosts: kafka-nodes
+  gather_facts: False 
+  remote_user: vagrant
+  
+  tasks:
+  
+  - name: Install required packages
+    yum: name={{ item.name }} state={{ item.state }}
+    with_items:
+     - {name: 'java-1.8.0-openjdk', state: 'present'}
+     - {name: 'wget', state: 'present'}
+     - {name: 'java-1.8.0-openjdk-devel', state: 'present'}
+
+  - name: Modify the hosts files
+    shell: echo '192.168.33.10  kafka-node1' >> /etc/hosts && echo '192.168.33.11  kafka-node2' >> /etc/hosts
+ 
+  - name: Set Java env variable
+    command: "{{ item }}"
+    with_items:
+     - echo "export JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk.x86_64" >> ~/.bashrc
+     - update-alternatives --install /usr/bin/java java /opt/jdk/jdk1.8.0_60/bin/java 100
+
+  - name: Download & Extract zookeeper   
+    unarchive: src=/etc/ansible/playbook/test/zookeeper-3.4.9.tar.gz  dest=/opt
+
+  - name: Move zookeeper config file
+    command: mv /opt/zookeeper-3.4.9/conf/zoo_sample.cfg  /opt/zookeeper-3.4.9/conf/zoo.cfg
+
+  - name: Modify zookeeper config
+    lineinfile: dest=/opt/zookeeper-3.4.9/conf/zoo.cfg regexp="^dataDir=" line="dataDir=/opt/zookeeper-3.4.9/data"
+
+  - name: Create data directory
+    file: path=/opt/zookeeper-3.4.9/data state=directory
+
+  - name: Start ZooKeeper Server
+    command: "{{ item }}"
+    with_items:
+     - /opt/zookeeper-3.4.9/bin/zkServer.sh start
+
+  - name: Download & Install Kafka
+    unarchive: src=/etc/ansible/playbook/test/kafka_2.11-0.9.0.0.tgz  dest=/opt
+
+  - name: Start kafka Server
+    shell: bin/kafka-server-start.sh  config/server.properties &
+    args:
+     chdir: /opt/kafka_2.11-0.9.0.0
+
+#END
+
+### kafka topic not working due to connection refused ###
+#
+#    environment: 
+#      PATH: export LOG_DIR=/tmp
+    
+#  - name: Create a topic in kafka-nodes
+#    shell: bin/kafka-topics.sh --zookeeper kafka-node1:2181 --create --topic test_topic --partitions 2 --replication-factor 2
+#    args:
+#     chdir: /opt/kafka_2.11-0.9.0.0
