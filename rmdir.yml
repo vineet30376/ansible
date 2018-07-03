@@ -1,0 +1,8 @@
+---
+
+- hosts: rhel6.7
+
+  tasks:
+
+   - name: Remove directory
+     file: path=/tmp/hello state=absent
