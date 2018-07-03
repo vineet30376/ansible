@@ -1,0 +1,8 @@
+---
+
+- hosts: rhel6.7
+
+  tasks:
+
+   - name: Create test template
+     template: src=/etc/ansible/playbook/templatetest dest=/tmp/ansibletest mode=644
