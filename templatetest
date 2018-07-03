@@ -1,0 +1,3 @@
+## Template file ##
+
+This is a template from {{ ansible_hostname }}
