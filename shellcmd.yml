@@ -1,0 +1,10 @@
+---
+- hosts: rhel6.7
+
+  tasks:
+
+   - name: List files in tmp & then redirect
+     shell: /bin/ls -l /tmp > /tmp/ansibletest 
+
+   - name: Cat /tmp/ansibletest
+     shell: /bin/cat /tmp/ansibletest
